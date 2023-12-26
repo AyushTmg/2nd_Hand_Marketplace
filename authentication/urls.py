@@ -6,6 +6,4 @@ urlpatterns = [
     path("login/", UserLoginView.as_view(), name="login"),
     path("logout/",UserLogoutView.as_view(),name='logout'),
     path("change-password/",ChangePasswordView.as_view(),name='change-password'),
-
-
 ]
