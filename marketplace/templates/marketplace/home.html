@@ -10,6 +10,26 @@
       type="text/css"
       href="{% static 'css/index.css' %}"
     />
+    <style>.item-container {
+      display: flex;  /* Arrange content vertically */
+      flex-direction: column;
+      margin-bottom: 20px;  /* Adjust spacing as needed */
+      border: 1px solid #ccc;  /* Optional border for separation */
+      padding: 10px;
+    }
+    
+    .item-image {
+      width: 150px;  /* Adjust image width as desired */
+      height: 100px;  /* Adjust image height as needed */
+      object-fit: cover;  /* Maintain aspect ratio while covering available space */
+      margin-bottom: 5px;  /* Spacing between images */
+    }
+    
+    .item-separator {
+      border-top: 1px dashed #ccc;  /* Optional separator line */
+      margin-bottom: 20px;  /* Adjust spacing as needed */
+    }
+  </style>    
   </head>
 
   <body>
@@ -17,7 +37,23 @@
 
     <a href="/logout/">LogOut</a>
     <a href="/change-password/">Change Password</a>
-
+    <a href="/create-item/">Create Post</a>
+    {% for item in items %}
+    <div class="item-container">
+      <h2>{{ item.title }}</h2>
+      <p>{{ item.description }}</p>
+      <p>Condition: {{ item.get_condition_display }}</p>
+      <p>Location: {{ item.location }}</p>
+      <p>Negotiable: {{ item.is_negotiable}}</p>
+    
+      <div class="images">
+        {% for image in item.image.all %}
+        <img src="{{ image.image.url }}" alt="{{ item.title }}" class="item-image">
+        {% endfor %}
+      </div>
+    </div>
+    <hr class="item-separator">  {% endfor %}
+    
    
   </body>
 </html>
