@@ -1,4 +1,4 @@
 .env
-/media/*
-/static/*
-__pycache__/*
+/media/
+/static/
+__pycache__/
