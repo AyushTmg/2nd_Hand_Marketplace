@@ -1,8 +1,9 @@
 from typing import Any
 from django.shortcuts import render,redirect
-from django.views.generic import TemplateView,CreateView
+from django.views.generic import TemplateView,CreateView,DetailView
 from .models import Item,Image
 from .forms import ItemForm,ImageForm
+
 
 class HomeView(TemplateView):
     template_name='marketplace/home.html'
@@ -11,6 +12,21 @@ class HomeView(TemplateView):
         context=super().get_context_data(**kwargs)
         context['items']=Item.objects.all()
         return context
+    
+class ItemDetailView(DetailView):
+    model = Item
+    template_name = 'marketplace/item_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        item = self.object 
+        item_id=item.id
+        category = item.category
+        others = Item.objects.exclude(id=item_id).filter(category=category)
+        context['others'] = others
+        return context
+    
+
 
 class CreateItemView(CreateView):
     model = Item

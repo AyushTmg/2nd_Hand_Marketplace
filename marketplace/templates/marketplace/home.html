@@ -39,12 +39,13 @@
     <a href="/change-password/">Change Password</a>
     <a href="/create-item/">Create Post</a>
     {% for item in items %}
+    <a href="{% url 'item-detail' item.pk%}" class="delete-button"
+    >
     <div class="item-container">
       <h2>{{ item.title }}</h2>
       <p>{{ item.description }}</p>
-      <p>Condition: {{ item.get_condition_display }}</p>
       <p>Location: {{ item.location }}</p>
-      <p>Negotiable: {{ item.is_negotiable}}</p>
+      <p>Price: {{ item.price}}</p>
     
       <div class="images">
         {% for image in item.image.all %}
@@ -52,6 +53,7 @@
         {% endfor %}
       </div>
     </div>
+  </a>
     <hr class="item-separator">  {% endfor %}
     
    
