@@ -1,5 +1,5 @@
 from django import forms 
-from .models import Item
+from .models import Item,Comment,Reply
 from multiupload.fields import MultiFileField
 
 class ItemForm(forms.ModelForm):
@@ -9,3 +9,19 @@ class ItemForm(forms.ModelForm):
 
 class ImageForm(forms.Form):
     image = MultiFileField(min_num=1, max_num=10, max_file_size=10485760)
+
+
+class CommentForm(forms.ModelForm):
+    class Meta: 
+        model=Comment
+        fields=['description']
+
+
+class ReplyForm(forms.ModelForm):  
+    class Meta:
+        model=Reply
+        fields=['description']
+
+
+
+

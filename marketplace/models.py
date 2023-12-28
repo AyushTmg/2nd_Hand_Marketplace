@@ -40,5 +40,16 @@ class Image(models.Model):
     def __str__(self):
         return f"Image for {self.item.title}"
     
+class Comment(models.Model):
+    description=models.CharField(max_length=250)
+    user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='comment')
+    item=models.ForeignKey(Item,on_delete=models.CASCADE,related_name='comment')
+
+class Reply(models.Model):
+    description=models.CharField(max_length=250)
+    user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='reply')
+    comment=models.ForeignKey(Comment,on_delete=models.CASCADE, related_name="reply")
+
+    
 
     
