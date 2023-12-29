@@ -1,0 +1,17 @@
+{{comment.user}} <br>
+{{comment.description}} <br>
+
+
+From here is reply
+
+{%for reply in replies%}
+{{reply.user}}  <br>
+{{reply.description}}
+{%endfor%} 
+<br>
+<form method="post" >
+    {% csrf_token %}
+   Add Reply {{ form.description }}
+    <input type="submit" value="Reply"> 
+</form>
+

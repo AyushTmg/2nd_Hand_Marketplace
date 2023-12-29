@@ -1,14 +1,17 @@
-from typing import Any
-from django.shortcuts import render,redirect
-from django.views.generic import TemplateView,CreateView,DetailView
-from .models import Item,Image
-from .forms import ItemForm,ImageForm
+from django.shortcuts import render,redirect,get_object_or_404
+from django.views.generic import TemplateView,CreateView,DetailView,FormView
+from .models import Item,Image,Comment,Reply
+from django.http import JsonResponse
+from .forms import ItemForm,ImageForm,CommentForm,ReplyForm
+from django.contrib.auth import get_user_model
+from django.urls import reverse
+
 
 
 class HomeView(TemplateView):
     template_name='marketplace/home.html'
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+    def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
         context['items']=Item.objects.all()
         return context
@@ -22,9 +25,25 @@ class ItemDetailView(DetailView):
         item = self.object 
         item_id=item.id
         category = item.category
+        comment=Comment.objects.filter(item=item)
         others = Item.objects.exclude(id=item_id).filter(category=category)
+        context['comments']=comment
         context['others'] = others
+        context['comment_form']=CommentForm()
         return context
+    
+    def post(self,request, *args, **kwargs):
+        item=self.get_object()
+        form=CommentForm(request.POST)
+        if request.method=='POST':
+            if form.is_valid():
+                new_comment=form.save(commit=False)
+                new_comment.item=item 
+                new_comment.user=request.user
+                new_comment.save()
+                pk=self.kwargs['pk']
+                return redirect(reverse('item-detail', args=[pk]))
+
     
 
 
@@ -50,3 +69,27 @@ class CreateItemView(CreateView):
                 image = Image(item=item, image=file)
                 image.save()
         return super().form_valid(form)
+    
+
+
+def replyView(request,pk):
+    comment=get_object_or_404(Comment,id=pk)
+    replies=Reply.objects.filter(comment=comment)
+    form=ReplyForm()
+    if request.method=='POST':
+        form=ReplyForm(request.POST)
+        if form.is_valid():
+            reply=form.save(commit=False)
+            reply.comment=comment
+            reply.user=request.user
+            reply.save()
+            redirect(reverse('add-reply', args=[pk]))
+    context={
+        'form':form,
+        'replies':replies,
+        'comment':comment
+    }
+    return render(request,'marketplace/add_reply.html',context)
+
+    
+

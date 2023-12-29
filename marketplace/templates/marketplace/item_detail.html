@@ -18,6 +18,32 @@
         <img src="{{ image.image.url }}" alt="{{ item.title }}">
     {% endfor %}
 
+
+    <button id="show-comments">Comments</button>
+    <div id="comments-container" style="display: none;">
+    {%if comments%}
+    {%for comment in comments%}
+    <p>User: {{ comment.user}}</p>
+    <p>Description: {{ comment.description }}</p>
+    <a href="{% url 'add-reply' comment.id %}">Reply</a>
+
+
+  </form>
+    {%endfor%}
+
+    {%else%}
+    <h1>No Comments Yet</h1>
+    {%endif%}
+    <form method="post" >
+      {% csrf_token %}
+     Add Comment {{ comment_form.description }}
+      <input type="submit" value="Comment"> 
+    </form>
+  
+    </div>
+
+
+
     <h2>Other Items in {{ item.category }} Category</h2>
     {% for other in others %}
     <a href="{% url 'item-detail' other.pk %}">
@@ -33,5 +59,16 @@
             </a>
             <br>
     {% endfor %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          document.getElementById('show-comments').addEventListener('click', function () {
+            var commentsContainer = document.getElementById('comments-container');
+            commentsContainer.style.display = (commentsContainer.style.display === 'none') ? 'block' : 'none';
+          });
+        });
+      </script>
+
+    
 </body>
 </html>
