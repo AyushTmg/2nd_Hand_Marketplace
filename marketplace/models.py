@@ -45,11 +45,16 @@ class Comment(models.Model):
     user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='comment')
     item=models.ForeignKey(Item,on_delete=models.CASCADE,related_name='comment')
 
+    def __str__(self) -> str:
+        return self.description
+    
 class Reply(models.Model):
     description=models.CharField(max_length=250)
     user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='reply')
     comment=models.ForeignKey(Comment,on_delete=models.CASCADE, related_name="reply")
-
+    
+    def __str__(self) -> str:
+        return self.description
     
 
     
