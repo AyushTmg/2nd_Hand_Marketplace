@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from django.views.generic import TemplateView,CreateView,DetailView,FormView
+from django.views.generic import TemplateView,CreateView,DetailView,FormView,DeleteView
 from .models import Item,Image,Comment,Reply
 from django.http import JsonResponse
 from .forms import ItemForm,ImageForm,CommentForm,ReplyForm
@@ -15,6 +15,12 @@ class HomeView(TemplateView):
         context=super().get_context_data(**kwargs)
         context['items']=Item.objects.all()
         return context
+    
+    def dispatch(self, request, *args, **kwargs):
+         if request.user.is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+         else:
+            return redirect('login')
     
 class ItemDetailView(DetailView):
     model = Item
@@ -70,6 +76,12 @@ class CreateItemView(CreateView):
                 image.save()
         return super().form_valid(form)
     
+    def dispatch(self, request, *args, **kwargs):
+         if request.user.is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+         else:
+            return redirect('login')
+    
 
 
 def replyView(request,pk):
@@ -90,6 +102,17 @@ def replyView(request,pk):
         'comment':comment
     }
     return render(request,'marketplace/add_reply.html',context)
+
+class ItemDeleteView(DeleteView):
+    model=Item
+    template_name='marketplace/item_delete.html'
+    success_url ='/'
+        
+    def dispatch(self, request, *args, **kwargs):
+         if request.user.is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+         else:
+            return redirect('login')
 
     
 

@@ -51,9 +51,15 @@
         {% for image in item.image.all %}
         <img src="{{ image.image.url }}" alt="{{ item.title }}" class="item-image">
         {% endfor %}
-      </div>
+      </div> 
+      
+      
     </div>
   </a>
+  {%if item.user == request.user%}
+  <a href="{% url 'item-delete' item.pk %}" > Delete post</a>
+  {%endif%}
+  
     <hr class="item-separator">  {% endfor %}
     
    
