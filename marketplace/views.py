@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from django.views.generic import TemplateView,CreateView,DetailView,FormView,DeleteView
+from django.views.generic import TemplateView,CreateView,DetailView,DeleteView
+from django.views import View
 from .models import Item,Image,Comment,Reply
 from django.http import JsonResponse
 from .forms import ItemForm,ImageForm,CommentForm,ReplyForm
@@ -72,8 +73,9 @@ class CreateItemView(CreateView):
         image_form = ImageForm(self.request.POST, self.request.FILES)
         if image_form.is_valid():
             for file in image_form.cleaned_data['image']:
-                image = Image(item=item, image=file)
-                image.save()
+                image = Image.objects.create(item=item, image=file)
+                
+
         return super().form_valid(form)
     
     def dispatch(self, request, *args, **kwargs):
@@ -82,26 +84,44 @@ class CreateItemView(CreateView):
          else:
             return redirect('login')
     
+         
+class ReplyView(View):
+    template_name = 'marketplace/add_reply.html'
 
+    def get(self, request, pk):
+        comment = get_object_or_404(Comment, id=pk)
+        replies = Reply.objects.filter(comment=comment)
+        form = ReplyForm()
+        context = {
+            'form': form,
+            'replies': replies,
+            'comment': comment
+        }
+        return render(request, self.template_name, context)
 
-def replyView(request,pk):
-    comment=get_object_or_404(Comment,id=pk)
-    replies=Reply.objects.filter(comment=comment)
-    form=ReplyForm()
-    if request.method=='POST':
-        form=ReplyForm(request.POST)
+    def post(self, request, pk):
+        comment = get_object_or_404(Comment, id=pk)
+        form = ReplyForm(request.POST)
         if form.is_valid():
-            reply=form.save(commit=False)
-            reply.comment=comment
-            reply.user=request.user
+            reply = form.save(commit=False)
+            reply.comment = comment
+            reply.user = request.user
             reply.save()
-            redirect(reverse('add-reply', args=[pk]))
-    context={
-        'form':form,
-        'replies':replies,
-        'comment':comment
-    }
-    return render(request,'marketplace/add_reply.html',context)
+            return redirect(reverse('add-reply', args=[pk]))
+
+        replies = Reply.objects.filter(comment=comment)
+        context = {
+            'form': form,
+            'replies': replies,
+            'comment': comment
+        }
+        return render(request, self.template_name, context)
+    
+    def dispatch(self, request, *args, **kwargs):
+         if request.user.is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+         else:
+            return redirect('login')
 
 class ItemDeleteView(DeleteView):
     model=Item
