@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from django.views.generic import FormView
+from django.views.generic import FormView,CreateView
 from .forms import UserRegistrationForm,UserLoginForm
 from django.contrib.auth import authenticate,login as auth_login , logout,update_session_auth_hash
 from django.urls import reverse_lazy
 from django.contrib import messages
+from .models import User
 from django.contrib.auth.forms import PasswordChangeForm,SetPasswordForm
 
 
-class UserRegistrationView(FormView):
+class UserRegistrationView(CreateView):
+    model=User
     template_name='authentication/registration.html'
     form_class=UserRegistrationForm
     success_url=reverse_lazy("login")
