@@ -14,9 +14,17 @@
     <p>Negotiable: {{ item.get_is_negotiable}}</p>
     <p>Created at: {{ item.created_at }}</p>
 
+    {% comment %} ! To chat with user  {% endcomment %}
+    {% if not request.user == item.user %}
+    <a href="{% url 'chat' item.user.pk %}"> Chat with seller </a>
+    {%endif%}
+    
+
     {% for image in item.image.all %}
         <img src="{{ image.image.url }}" alt="{{ item.title }}">
     {% endfor %}
+
+    
 
 
     <button id="show-comments">Comments</button>

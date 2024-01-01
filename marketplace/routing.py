@@ -3,6 +3,5 @@ from . import consumers
 
 
 websocket_urlpatterns=[
-   path('ws/ayush/',consumers.MySyncWebsocketConsumer.as_asgi()),
-
+   path('ws/chat/<str:pk>/',consumers.MyAsyncWebsocketConsumer.as_asgi()),
 ]
