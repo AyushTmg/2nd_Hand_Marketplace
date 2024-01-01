@@ -5,6 +5,7 @@ from .models import Item,Image,Comment,Reply,Message
 from .forms import ItemForm,ImageForm,CommentForm,ReplyForm
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.db.models import Q
 
 
 
@@ -133,6 +134,28 @@ class ItemDeleteView(DeleteView):
          else:
             return redirect('login')
          
+class CommentDeleteView(DeleteView):
+    model=Comment
+    template_name='marketplace/comment_delete.html'
+    success_url ='/'
+        
+    def dispatch(self, request, *args, **kwargs):
+         if request.user.is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+         else:
+            return redirect('login')
+         
+class ReplyDeleteView(DeleteView):
+    model=Reply
+    template_name='marketplace/reply_delete.html'
+    success_url ='/'
+        
+    def dispatch(self, request, *args, **kwargs):
+         if request.user.is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+         else:
+            return redirect('login')
+         
 def chat(request,pk):
     user_model = get_user_model() 
     user = user_model.objects.get(pk=pk)
@@ -147,4 +170,18 @@ def chat(request,pk):
         'messages':messages
     }
     return render(request,'marketplace/chat.html',context)    
+
+def viewChat(request):
+    messages=[]
+    try:
+        messages = Message.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
+        
+    except:
+        pass
+    context={
+        'messages':messages
+    }
+    return render(request,'marketplace/view_chat.html',context)  
+
+    
 

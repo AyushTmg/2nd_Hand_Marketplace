@@ -7,6 +7,10 @@ From here is reply
 {%for reply in replies%}
 {{reply.user}}  <br>
 {{reply.description}}
+{% if request.user == reply.user %}
+<a href="{% url 'reply-delete' reply.id %}" >Delete Reply</a> 
+{%endif%}
+
 {%endfor%} 
 <br>
 <form method="post" >

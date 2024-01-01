@@ -15,6 +15,7 @@
     <p>Created at: {{ item.created_at }}</p>
 
     {% comment %} ! To chat with user  {% endcomment %}
+    
     {% if not request.user == item.user %}
     <a href="{% url 'chat' item.user.pk %}"> Chat with seller </a>
     {%endif%}
@@ -35,6 +36,9 @@
     <p>Description: {{ comment.description }}</p>
     <a href="{% url 'add-reply' comment.id %}">Reply</a>
 
+    {% if request.user == comment.user %}
+    <a href="{% url 'comment-delete' comment.id %}" >Delete Comment</a> 
+    {%endif%}
 
   </form>
     {%endfor%}
