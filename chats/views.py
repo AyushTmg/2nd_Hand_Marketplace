@@ -1,35 +1,50 @@
 from django.shortcuts import render
-from .models import Message
+from .models import Message , Chat 
 from django.contrib.auth import get_user_model
 from django.db.models import Q
-
 
 
        
 def chat(request,pk):
     user_model = get_user_model() 
     user = user_model.objects.get(pk=pk)
+    current_user=request.user
+
+    chat=Chat.objects.filter(
+        Q(initiator=user,receiver=current_user) |  Q(initiator=current_user,receiver=user)
+    ).first()
+    if not chat:
+        chat=[]
+    
     messages=[]
+
     try:
-        messages=Message.objects.filter(sender=request.user,receiver=user)
-        
-    except:
-        pass
+        messages=Message.objects.filter(chat=chat)
+
+    except: 
+        pass 
+
     context={
-        'user_id':pk,
-        'messages':messages
+        'messages':messages,
+        'user_id':pk
     }
     return render(request,'chats/chat.html',context)    
 
+
 def viewChat(request):
     messages=[]
+    chat=[]
+    user=request.user
     try:
-        messages = Message.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
+        chat=Chat.objects.filter(
+        Q(initiator=user) |  Q(receiver=user)
+    )
         
     except:
         pass
+
     context={
-        'messages':messages
+        'chats':chat
     }
     return render(request,'chats/view_chat.html',context)  
 

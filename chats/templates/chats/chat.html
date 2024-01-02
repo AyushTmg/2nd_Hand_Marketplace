@@ -10,9 +10,17 @@
         chatting with  user with id {{user_id}} <br>
 
         <textarea name="Chats" id="chat-log" cols="100" rows="12">
+
             {%for message in messages%}
-            {{message.sender}}:{{message.content}}
+        {%if message.sender == request.user%}
+           Sender ho yo : {{message.content}} 
+        {%else%}
+            Receiver ho yo: {{message.content}}
+        {%endif%}
+
             {%endfor%}
+            
+
         </textarea> <br>
            <input type="text" size="130" id="chat-input"> <br>
            <input type="button" value="Send" id="chat-send"><br>
@@ -20,13 +28,13 @@
            {{user_id| json_script:"user-id"}}
     
         <script>
-            const uid=JSON.parse(document.getElementById("user-id").textContent)
-            console.log("group name is ", uid)
+            const user_id=JSON.parse(document.getElementById("user-id").textContent)
+            console.log("group name is ", user_id)
     
             var ws=new WebSocket(
                 "ws://"
                 +window.location.host
-                +'/ws/chat/'+uid
+                +'/ws/chat/'+user_id
                 +'/'
             )
     
@@ -60,3 +68,5 @@
         </script>
     </body>
     </html>
+
+    

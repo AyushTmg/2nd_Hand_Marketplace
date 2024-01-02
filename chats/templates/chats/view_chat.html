@@ -1,8 +1,31 @@
-Viewing chat of {{request.user.first_name}}
 
-{%for message in messages%}
-<a href="{% url 'chat' message.sender.pk%}">{{message.sender}}</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Inbox</title>
 
- <br>
+</head>
+<body>
+    <h1>Your Chat Inbox</h1>
+    
+    <ul>
+        {% for chat in chats %}
+            <li>
+                {% if user == chat.receiver %}
+                    <a href="{% url 'chat' pk=chat.initiator.id %}">
+                        Chat with {{ chat.initiator.username }}
+                    </a>
+                {% else %}
+                    <a href="{% url 'chat' pk=chat.receiver.id %}">
+                        Chat with {{ chat.receiver.username }}
+                    </a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
 
-{%endfor%}
+
+</body>
+</html>

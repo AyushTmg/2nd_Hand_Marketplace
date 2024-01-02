@@ -38,6 +38,8 @@
     <a href="/logout/">LogOut</a>
     <a href="/change-password/">Change Password</a>
     <a href="/create-item/">Create Post</a>
+    <a href="/inbox/">Messages</a>
+
     {% for item in items %}
     <a href="{% url 'item-detail' item.pk%}" class="delete-button"
     >
