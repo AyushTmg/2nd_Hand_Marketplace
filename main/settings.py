@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     #  'multiupload',
     'authentication',
     'marketplace',
+    'chats',
 ]
 
 MIDDLEWARE = [

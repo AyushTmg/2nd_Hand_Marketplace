@@ -1,0 +1,8 @@
+Viewing chat of {{request.user.first_name}}
+
+{%for message in messages%}
+<a href="{% url 'chat' message.sender.pk%}">{{message.sender}}</a>
+
+ <br>
+
+{%endfor%}

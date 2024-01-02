@@ -8,3 +8,6 @@ class User(AbstractUser):
 
     USERNAME_FIELD='email'
     REQUIRED_FIELDS=['first_name','last_name','username']
+
+    def __str__(self) -> str:
+        return f"{self.username}"

@@ -1,11 +1,9 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic import TemplateView,CreateView,DetailView,DeleteView
 from django.views import View
-from .models import Item,Image,Comment,Reply,Message
+from .models import Item,Image,Comment,Reply
 from .forms import ItemForm,ImageForm,CommentForm,ReplyForm
-from django.contrib.auth import get_user_model
 from django.urls import reverse
-from django.db.models import Q
 
 
 
@@ -155,33 +153,4 @@ class ReplyDeleteView(DeleteView):
             return super().dispatch(request, *args, **kwargs)
          else:
             return redirect('login')
-         
-def chat(request,pk):
-    user_model = get_user_model() 
-    user = user_model.objects.get(pk=pk)
-    messages=[]
-    try:
-        messages=Message.objects.filter(sender=request.user,receiver=user)
-        
-    except:
-        pass
-    context={
-        'user_id':pk,
-        'messages':messages
-    }
-    return render(request,'marketplace/chat.html',context)    
-
-def viewChat(request):
-    messages=[]
-    try:
-        messages = Message.objects.filter(Q(sender=request.user) | Q(receiver=request.user))
-        
-    except:
-        pass
-    context={
-        'messages':messages
-    }
-    return render(request,'marketplace/view_chat.html',context)  
-
-    
-
+  
