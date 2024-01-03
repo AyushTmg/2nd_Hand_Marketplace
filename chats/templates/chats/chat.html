@@ -5,26 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        #chat-log {
+            height: 630px;
+            overflow-y: auto;
+        }
+        .message {
+            display: inline-block;
+            padding: 8px;
+            margin: 0;
+            border-radius:25px;
+        }
+    </style>
 </head>
 <body>
         chatting with  user with id {{user_id}} <br>
 
-        <textarea name="Chats" id="chat-log" cols="100" rows="12">
-
-            {%for message in messages%}
-        {%if message.sender == request.user%}
-           Sender ho yo : {{message.content}} 
-        {%else%}
-            Receiver ho yo: {{message.content}}
-        {%endif%}
-
-            {%endfor%}
+        <div name="Chats" id="chat-log">
             
+            {% for message in messages %}
+                {% if message.sender == request.user %}
+                    <p style="background-color: blue; color: white;padding: 7px;float: right;" class="message">{{ message.content }}</p> <br><br>
+                {% else %}
+                    <p style="background-color: grey; color: white;padding: 7px; " class="message">{{ message.content }}</p> <br><br>
+                {% endif %}
+            {% endfor %}
 
-        </textarea> <br>
+        </div> <br>
+
+
            <input type="text" size="130" id="chat-input"> <br>
            <input type="button" value="Send" id="chat-send"><br>
            
+
            {{user_id| json_script:"user-id"}}
     
         <script>
@@ -47,8 +60,33 @@
             ws.onmessage=function(event){
                 console.log("Websocket message received",event.data)
                 const data=JSON.parse(event.data)
-                document.querySelector("#chat-log").value+=data.user+":"+data.msg+"\n" 
-            }
+                const chatLog = document.querySelector("#chat-log");
+
+                const isCurrentUser = data.sender === '{{ request.user }}';
+
+                const messageElement = document.createElement('p');
+                messageElement.textContent = `${data.msg}`;
+            
+                if (isCurrentUser) {
+                    messageElement.style.backgroundColor = 'blue';
+                    messageElement.style.color = 'white';
+                    messageElement.style.padding='8px'
+                    messageElement.style.display='inline-block'
+                    messageElement.style.float='right'
+                    messageElement.style.borderRadius = '25px';
+                } else {
+                    messageElement.style.backgroundColor = 'grey';
+                    messageElement.style.color = 'white';
+                    messageElement.style.padding='8px'
+                    messageElement.style.display='inline-block'
+                    messageElement.style.borderRadius = '25px';
+
+                }
+            
+                chatLog.appendChild(messageElement);
+                
+
+                chatLog.scrollTop = chatLog.scrollHeight;            }
     
     {% comment %} !On websocket closing {% endcomment %}
             ws.onclose=function(){
