@@ -4,12 +4,12 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    list_display=['first_name','last_name','email','username', "is_staff", "is_active","is_superuser","last_login","date_joined"]
+    list_display=['first_name','last_name','email','username', 'image',"is_staff", "is_active","is_superuser","last_login","date_joined"]
     add_fieldsets = (
         (None, {
             "classes": ("wide",),
             "fields": (
-                "first_name","last_name","username","email", "password1", "password2", "is_staff",
+                "first_name","last_name","username","email",'image', "password1", "password2", "is_staff",
                 "is_active","is_superuser", "groups", "user_permissions"
             )}
         ),

@@ -5,6 +5,7 @@ class User(AbstractUser):
     first_name=models.CharField(max_length=150)
     last_name=models.CharField(max_length=150)
     email=models.EmailField(unique=True)
+    image=models.ImageField(upload_to='user_image/',blank=True,null=True,default='default/default.webp')
 
     USERNAME_FIELD='email'
     REQUIRED_FIELDS=['first_name','last_name','username']
