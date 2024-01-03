@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic import TemplateView,CreateView,DetailView,DeleteView
 from django.views import View
-from .models import Item,Image,Comment,Reply
+from .models import Item,Image,Comment,Reply,Category
 from .forms import ItemForm,ImageForm,CommentForm,ReplyForm
 from django.urls import reverse
 
@@ -13,6 +13,7 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
         context['items']=Item.objects.all()
+        context['categories']=Category.objects.all()
         return context
     
     def dispatch(self, request, *args, **kwargs):
@@ -153,4 +154,13 @@ class ReplyDeleteView(DeleteView):
             return super().dispatch(request, *args, **kwargs)
          else:
             return redirect('login')
+         
+def category(request,pk):
+    items = Item.objects.filter(category__id=pk).order_by("-created_at")
+    category=Category.objects.all()
+    context={
+        'items':items,
+        'categories':category
+    }
+    return render(request,'marketplace/category.html',context)
   

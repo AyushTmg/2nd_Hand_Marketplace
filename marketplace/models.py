@@ -2,10 +2,10 @@ from django.db import models
 from django.conf import settings 
 
 class  Category(models.Model):
-    titile=models.CharField(max_length=150,unique=True)
+    title=models.CharField(max_length=150,unique=True)
 
     def __str__(self) -> str:
-        return self.titile
+        return self.title
     
 class Item(models.Model):
     user=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='item')

@@ -11,6 +11,7 @@ urlpatterns = [
     path('item-delete/<str:pk>/',ItemDeleteView.as_view(),name='item-delete'),
     path('comment-delete/<str:pk>/',CommentDeleteView.as_view(),name='comment-delete'),
     path('reply-delete/<str:pk>/',ReplyDeleteView.as_view(),name='reply-delete'),
+    path('item-category/<str:pk>/',views.category,name='item-category'),
 
 ]
 

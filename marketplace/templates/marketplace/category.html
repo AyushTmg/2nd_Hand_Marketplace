@@ -45,6 +45,11 @@
     <a href="{% url 'item-category' category.pk%}" >{{category.title}}</a>
   {%endfor%}
 
+  {% if not items %}
+  <p style="font-size: 90px; color: red; height: 500px; width: 500px;">No Items Found! </p>
+{% endif %}
+
+
 
     {% for item in items %}
     <a href="{% url 'item-detail' item.pk%}" class="delete-button"
