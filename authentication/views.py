@@ -1,12 +1,17 @@
-from django.shortcuts import render, redirect
+from .models import User
+from .forms import UserRegistrationForm,UserLoginForm,SendResetPasswordEmailForm,ResetPasswordForm
 from django.views import View
+from django.shortcuts import render, redirect
 from django.views.generic import FormView,CreateView
-from .forms import UserRegistrationForm,UserLoginForm
 from django.contrib.auth import authenticate,login as auth_login , logout,update_session_auth_hash
 from django.urls import reverse_lazy
 from django.contrib import messages
-from .models import User
-from django.contrib.auth.forms import PasswordChangeForm,SetPasswordForm
+from django.contrib.auth.forms import PasswordChangeForm 
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import smart_str
+from django.core.exceptions import ValidationError
+
 
 
 class UserRegistrationView(CreateView):
@@ -78,8 +83,63 @@ class ChangePasswordView(View):
         form=PasswordChangeForm(request.user)
         return render(request, self.template_name,{'form':form})
     
+
     def dispatch(self, request, *args ,**kwargs) :
         if request.user.is_authenticated:
             return super().dispatch(request, *args, **kwargs)
         else:
             return redirect('login')
+        
+
+class SendResetPasswordEmailView(View):
+    template_name = 'authentication/send_reset_password_email.html'  
+
+    def get(self, request):
+        form = SendResetPasswordEmailForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = SendResetPasswordEmailForm(request.POST)
+        if form.is_valid():
+            return render(request,'authentication/email_sent.html')
+        else:
+            messages.error(request,"User doesn't exist with the given email")
+            return render(request,self.template_name,{'form':form})
+        
+    def dispatch(self, request, *args ,**kwargs) :
+        if request.user.is_authenticated:
+            return redirect('home')
+        else:
+            return super().dispatch(request, *args, **kwargs)
+
+class PasswordResetView(View):
+    template_name='authentication/password_reset.html'
+
+    def get(self,request,uid=None, token=None):
+        form =ResetPasswordForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self,request,uid,token):
+        form =ResetPasswordForm(request.POST)
+        if form.is_valid():
+            user_id=smart_str(urlsafe_base64_decode(uid))
+
+            try:
+                user = User.objects.get(id=user_id)
+            except User.DoesNotExist:
+                raise ValidationError("User not found")
+        
+            if not PasswordResetTokenGenerator().check_token(user, token):
+                raise ValidationError("Token Expired or Invalid")
+
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            return redirect('login')
+        
+        return render(request, self.template_name, {'form': form})
+
+    def dispatch(self, request, *args ,**kwargs) :
+        if request.user.is_authenticated:
+            return redirect('home')
+        else:
+            return super().dispatch(request, *args, **kwargs)
