@@ -41,36 +41,34 @@
     <a href="/inbox/">Messages</a>  
 
     <b>Category</b>
+
     {%for category in categories%}
-    <a href="{% url 'item-category' category.pk%}" >{{category.title}}</a>
-  {%endfor%}
+          <a href="{% url 'item-category' category.pk%}" >{{category.title}}</a>
+    {%endfor%}
 
-  {% if not items %}
-  <p style="font-size: 90px; color: red; height: 500px; width: 500px;">No Items Found! </p>
-{% endif %}
-
-
+    {% if not items %}
+          <p style="font-size: 90px; color: red; height: 500px; width: 500px;">No Items Found! </p>
+    {% endif %}
 
     {% for item in items %}
-    <a href="{% url 'item-detail' item.pk%}" class="delete-button"
-    >
-    <div class="item-container">
-      <h2>{{ item.title }}</h2>
-      <p>{{ item.description }}</p>
-      <p>Location: {{ item.location }}</p>
-      <p>Price: {{ item.price}}</p>
-    
-      <div class="images">
-        {% for image in item.image.all %}
-        <img src="{{ image.image.url }}" alt="{{ item.title }}" class="item-image">
-        {% endfor %}
-      </div> 
-      
-      
-    </div>
-  </a>
+    <a href="{% url 'item-detail' item.pk%}" class="delete-button">
+          <div class="item-container">
+                <h2>{{ item.title }}</h2>
+                <p>{{ item.description }}</p>
+                <p>Location: {{ item.location }}</p>
+                <p>Price: {{ item.price}}</p>
+              
+                <div class="images">
+                  {% for image in item.image.all %}
+                          <img src="{{ image.image.url }}" alt="{{ item.title }}" class="item-image">
+                  {% endfor %}
+                </div> 
+          </div>
+    </a>
+
+
   {%if item.user == request.user%}
-  <a href="{% url 'item-delete' item.pk %}" > Delete post</a>
+        <a href="{% url 'item-delete' item.pk %}" > Delete post</a>
   {%endif%}
   
     <hr class="item-separator">  {% endfor %}

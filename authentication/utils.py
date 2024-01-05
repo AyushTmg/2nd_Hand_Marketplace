@@ -3,6 +3,7 @@ from django.template.loader import render_to_string
 from django.conf import settings
 
 class Util:
+  
   @staticmethod
   def send_password_reset_email(data):
     try:

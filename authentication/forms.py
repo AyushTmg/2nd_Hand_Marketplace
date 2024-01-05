@@ -38,6 +38,7 @@ class SendResetPasswordEmailForm(forms.Form):
         uid = urlsafe_base64_encode(force_bytes(user.id))
         token = PasswordResetTokenGenerator().make_token(user)
         link = f'http://127.0.0.1:8000/reset-password/{uid}/{token}/'
+
         subject = "Resetting Password"
         to_email = user.email
         data = {
@@ -45,8 +46,8 @@ class SendResetPasswordEmailForm(forms.Form):
             "link": link,
             "to_email": to_email
         }
+        
         Util.send_password_reset_email(data)
-
         return email
     
 class ResetPasswordForm(forms.Form):

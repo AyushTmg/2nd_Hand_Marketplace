@@ -1,21 +1,23 @@
 {{comment.user}} <br>
 {{comment.description}} <br>
 
-
 From here is reply
 
 {%for reply in replies%}
-{{reply.user}}  <br>
-{{reply.description}}
-{% if request.user == reply.user %}
-<a href="{% url 'reply-delete' reply.id %}" >Delete Reply</a> 
-{%endif%}
+
+    {{reply.user}}  <br>
+    {{reply.description}}
+
+    {% if request.user == reply.user %}
+            <a href="{% url 'reply-delete' reply.id %}" >Delete Reply</a> 
+    {%endif%}
 
 {%endfor%} 
+
 <br>
 <form method="post" >
-    {% csrf_token %}
-   Add Reply {{ form.description }}
-    <input type="submit" value="Reply"> 
+        {% csrf_token %}
+        Add Reply {{ form.description }}
+        <input type="submit" value="Reply"> 
 </form>
 

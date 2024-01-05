@@ -1,17 +1,17 @@
 from .models import User
-from .forms import UserRegistrationForm,UserLoginForm,SendResetPasswordEmailForm,ResetPasswordForm,UserProfileForm
+from .forms import ( UserRegistrationForm,UserLoginForm,SendResetPasswordEmailForm,ResetPasswordForm,UserProfileForm )
+
 from django.views import View
 from django.shortcuts import render, redirect
 from django.views.generic import FormView,CreateView,DetailView,UpdateView
 from django.contrib.auth import authenticate,login as auth_login , logout,update_session_auth_hash
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm 
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import smart_str
 from django.core.exceptions import ValidationError
-from django.urls import reverse
 
 
 

@@ -9,13 +9,13 @@
   </head>
   <body>
     <form class="form-container" method="post">
-      <h2>Delete Confirmation</h2>
-      <p>
-        Are you sure you want to delete <b style="color: green">{{ item }}</b>?
-      </p>
-      {%csrf_token%}
-      <input type="Submit" value="Confirm" />
-      <a href="{%url 'home'%}">Cancel</a>
+          <h2>Delete Confirmation</h2>
+          
+          <p> Are you sure you want to delete <b style="color: green">{{ item }}</b>?</p>
+          {%csrf_token%}
+
+          <input type="Submit" value="Confirm" />
+          <a href="{%url 'home'%}">Cancel</a>
     </form>
   </body>
 </html>

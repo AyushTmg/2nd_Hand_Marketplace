@@ -26,6 +26,7 @@ class ItemDetailView(DetailView):
     model = Item
     template_name = 'marketplace/item_detail.html'
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         item = self.object 
@@ -38,6 +39,7 @@ class ItemDetailView(DetailView):
         context['comment_form']=CommentForm()
         return context
     
+
     def post(self,request, *args, **kwargs):
         item=self.get_object()
         form=CommentForm(request.POST)
@@ -59,10 +61,13 @@ class CreateItemView(CreateView):
     template_name = 'marketplace/item_create.html'
     success_url = '/'
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['image_form'] = ImageForm()
         return context
+
+
 
     def form_valid(self, form):
         item = form.save(commit=False)
@@ -73,10 +78,11 @@ class CreateItemView(CreateView):
         if image_form.is_valid():
             for file in image_form.cleaned_data['image']:
                 image = Image.objects.create(item=item, image=file)
-                
 
         return super().form_valid(form)
     
+
+
     def dispatch(self, request, *args, **kwargs):
          if request.user.is_authenticated:
             return super().dispatch(request, *args, **kwargs)
@@ -87,20 +93,28 @@ class CreateItemView(CreateView):
 class ReplyView(View):
     template_name = 'marketplace/add_reply.html'
 
+
+
     def get(self, request, pk):
         comment = get_object_or_404(Comment, id=pk)
         replies = Reply.objects.filter(comment=comment)
         form = ReplyForm()
+
         context = {
             'form': form,
             'replies': replies,
             'comment': comment
         }
+
         return render(request, self.template_name, context)
+
+
 
     def post(self, request, pk):
         comment = get_object_or_404(Comment, id=pk)
         form = ReplyForm(request.POST)
+
+
         if form.is_valid():
             reply = form.save(commit=False)
             reply.comment = comment
@@ -109,13 +123,17 @@ class ReplyView(View):
             return redirect(reverse('add-reply', args=[pk]))
 
         replies = Reply.objects.filter(comment=comment)
+
         context = {
             'form': form,
             'replies': replies,
             'comment': comment
         }
+
         return render(request, self.template_name, context)
     
+
+
     def dispatch(self, request, *args, **kwargs):
          if request.user.is_authenticated:
             return super().dispatch(request, *args, **kwargs)
@@ -126,7 +144,8 @@ class ItemDeleteView(DeleteView):
     model=Item
     template_name='marketplace/item_delete.html'
     success_url ='/'
-        
+
+
     def dispatch(self, request, *args, **kwargs):
          if request.user.is_authenticated:
             return super().dispatch(request, *args, **kwargs)
@@ -138,6 +157,7 @@ class CommentDeleteView(DeleteView):
     template_name='marketplace/comment_delete.html'
     success_url ='/'
         
+
     def dispatch(self, request, *args, **kwargs):
          if request.user.is_authenticated:
             return super().dispatch(request, *args, **kwargs)
@@ -149,6 +169,7 @@ class ReplyDeleteView(DeleteView):
     template_name='marketplace/reply_delete.html'
     success_url ='/'
         
+
     def dispatch(self, request, *args, **kwargs):
          if request.user.is_authenticated:
             return super().dispatch(request, *args, **kwargs)
@@ -158,9 +179,11 @@ class ReplyDeleteView(DeleteView):
 def category(request,pk):
     items = Item.objects.filter(category__id=pk).order_by("-created_at")
     category=Category.objects.all()
+
     context={
         'items':items,
         'categories':category
     }
+    
     return render(request,'marketplace/category.html',context)
   
