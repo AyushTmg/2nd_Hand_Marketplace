@@ -35,10 +35,13 @@
   <body>
     <h1>Welcome {{request.user.first_name}}</h1>
 
+
+    <a href="/">Home</a>
     <a href="/logout/">LogOut</a>
     <a href="/change-password/">Change Password</a>
     <a href="/create-item/">Create Post</a>
     <a href="/inbox/">Messages</a>  
+    <a href="{% url 'user-profile' request.user.pk%}" >View profile</a>
 
     <b>Category</b>
     {%for category in categories%}
