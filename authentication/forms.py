@@ -8,10 +8,16 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import  force_bytes
 from django.contrib.auth.password_validation import validate_password
 
+
 class UserRegistrationForm(UserCreationForm):
     class Meta:
         model=User
-        fields=settings.SIGN_UP_FIELDS
+        fields=settings.SIGN_UP_FIELDS 
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model=User 
+        fields=['first_name','last_name','username','image']
 
 class UserLoginForm(forms.Form):
     email=forms.EmailField()

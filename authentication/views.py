@@ -1,8 +1,8 @@
 from .models import User
-from .forms import UserRegistrationForm,UserLoginForm,SendResetPasswordEmailForm,ResetPasswordForm
+from .forms import UserRegistrationForm,UserLoginForm,SendResetPasswordEmailForm,ResetPasswordForm,UserProfileForm
 from django.views import View
 from django.shortcuts import render, redirect
-from django.views.generic import FormView,CreateView
+from django.views.generic import FormView,CreateView,DetailView,UpdateView
 from django.contrib.auth import authenticate,login as auth_login , logout,update_session_auth_hash
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -11,6 +11,8 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import smart_str
 from django.core.exceptions import ValidationError
+from django.urls import reverse
+
 
 
 
@@ -143,3 +145,20 @@ class PasswordResetView(View):
             return redirect('home')
         else:
             return super().dispatch(request, *args, **kwargs)
+        
+class UserProfileView(DetailView):
+    model = User
+    template_name = 'authentication/user_profile.html'
+    context_object_name = 'user'
+
+
+class UpdateProfileView(UpdateView):
+    form_class=UserProfileForm
+    model=User
+    template_name='authentication/update_profile.html'
+
+    def get_object(self) :
+        return self.request.user 
+    
+    def get_success_url(self) -> str:
+        return reverse('user-profile',args=[self.request.user.pk])
