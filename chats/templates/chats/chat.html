@@ -85,9 +85,9 @@
                     messageElement.style.padding='8px'
                     messageElement.style.display='inline-block'
                     messageElement.style.borderRadius = '25px';
-                    const imageElement = document.createElement('img');
+                    {% comment %} const imageElement = document.createElement('img');
                     imageElement.src = data.sender.image.url;
-                    messageElement.appendChild(imageElement);
+                    messageElement.appendChild(imageElement); {% endcomment %}
 
                 }
             
