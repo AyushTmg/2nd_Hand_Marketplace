@@ -1,9 +1,14 @@
-from django.shortcuts import render,redirect,get_object_or_404
-from django.views.generic import TemplateView,CreateView,DetailView,DeleteView
 from django.views import View
 from .models import Item,Image,Comment,Reply,Category
 from .forms import ItemForm,ImageForm,CommentForm,ReplyForm
+
+
+from django.shortcuts import render,redirect,get_object_or_404
+from django.views.generic import TemplateView,CreateView,DetailView,DeleteView
+
+
 from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
@@ -15,14 +20,9 @@ class HomeView(TemplateView):
         context['items']=Item.objects.all()
         context['categories']=Category.objects.all()
         return context
+
     
-    def dispatch(self, request, *args, **kwargs):
-         if request.user.is_authenticated:
-            return super().dispatch(request, *args, **kwargs)
-         else:
-            return redirect('login')
-    
-class ItemDetailView(DetailView):
+class ItemDetailView(DetailView,LoginRequiredMixin):
     model = Item
     template_name = 'marketplace/item_detail.html'
 
@@ -55,7 +55,7 @@ class ItemDetailView(DetailView):
     
 
 
-class CreateItemView(CreateView):
+class CreateItemView(CreateView,LoginRequiredMixin):
     model = Item
     form_class = ItemForm
     template_name = 'marketplace/item_create.html'
@@ -90,7 +90,7 @@ class CreateItemView(CreateView):
             return redirect('login')
     
          
-class ReplyView(View):
+class ReplyView(View,LoginRequiredMixin):
     template_name = 'marketplace/add_reply.html'
 
 
@@ -122,6 +122,7 @@ class ReplyView(View):
             reply.save()
             return redirect(reverse('add-reply', args=[pk]))
 
+
         replies = Reply.objects.filter(comment=comment)
 
         context = {
@@ -134,48 +135,32 @@ class ReplyView(View):
     
 
 
-    def dispatch(self, request, *args, **kwargs):
-         if request.user.is_authenticated:
-            return super().dispatch(request, *args, **kwargs)
-         else:
-            return redirect('login')
 
-class ItemDeleteView(DeleteView):
+
+class ItemDeleteView(DeleteView,LoginRequiredMixin):
     model=Item
     template_name='marketplace/item_delete.html'
     success_url ='/'
 
 
-    def dispatch(self, request, *args, **kwargs):
-         if request.user.is_authenticated:
-            return super().dispatch(request, *args, **kwargs)
-         else:
-            return redirect('login')
+
          
-class CommentDeleteView(DeleteView):
+class CommentDeleteView(DeleteView,LoginRequiredMixin):
     model=Comment
     template_name='marketplace/comment_delete.html'
     success_url ='/'
         
 
-    def dispatch(self, request, *args, **kwargs):
-         if request.user.is_authenticated:
-            return super().dispatch(request, *args, **kwargs)
-         else:
-            return redirect('login')
+
          
-class ReplyDeleteView(DeleteView):
+class ReplyDeleteView(DeleteView,LoginRequiredMixin):
     model=Reply
     template_name='marketplace/reply_delete.html'
     success_url ='/'
         
 
-    def dispatch(self, request, *args, **kwargs):
-         if request.user.is_authenticated:
-            return super().dispatch(request, *args, **kwargs)
-         else:
-            return redirect('login')
-         
+
+
 def category(request,pk):
     items = Item.objects.filter(category__id=pk).order_by("-created_at")
     category=Category.objects.all()

@@ -2,16 +2,23 @@ from .models import User
 from .forms import ( UserRegistrationForm,UserLoginForm,SendResetPasswordEmailForm,ResetPasswordForm,UserProfileForm )
 
 from django.views import View
-from django.shortcuts import render, redirect
 from django.views.generic import FormView,CreateView,DetailView,UpdateView
-from django.contrib.auth import authenticate,login as auth_login , logout,update_session_auth_hash
+
+
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
+from django.core.exceptions import ValidationError
+
+
 from django.contrib import messages
+from django.contrib.auth import authenticate,login as auth_login , logout,update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+
+
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import smart_str
-from django.core.exceptions import ValidationError
 
 
 
@@ -48,7 +55,7 @@ class UserLoginView(FormView):
             return redirect('/')
         return super().dispatch(request,*args,**kwargs)
     
-class UserLogoutView(View):
+class UserLogoutView(View,LoginRequiredMixin):
     template_name = 'authentication/logout.html'
     login_url = 'login'
 
@@ -58,15 +65,10 @@ class UserLogoutView(View):
 
     def get(self, request):
         return render(request, self.template_name)
-    
-    def dispatch(self, request, *args,**kwargs) :
-        if request.user.is_authenticated:
-            return super().dispatch(request, *args, **kwargs)
-        return redirect(self.login_url)
 
 
 
-class ChangePasswordView(View):
+class ChangePasswordView(View,LoginRequiredMixin):
     template_name='authentication/change_password.html'
 
     def post(self, request):
@@ -146,13 +148,15 @@ class PasswordResetView(View):
         else:
             return super().dispatch(request, *args, **kwargs)
         
+
+
 class UserProfileView(DetailView):
     model = User
     template_name = 'authentication/user_profile.html'
     context_object_name = 'user'
 
 
-class UpdateProfileView(UpdateView):
+class UpdateProfileView(UpdateView,LoginRequiredMixin):
     form_class=UserProfileForm
     model=User
     template_name='authentication/update_profile.html'

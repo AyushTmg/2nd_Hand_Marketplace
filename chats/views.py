@@ -2,8 +2,10 @@ from django.shortcuts import render
 from .models import Message, Chat
 from django.contrib.auth import get_user_model
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def chat(request, pk):
     user_model = get_user_model()
     user = user_model.objects.get(pk=pk)
@@ -31,6 +33,8 @@ def chat(request, pk):
     return render(request, 'chats/chat.html', context)
 
 
+
+@login_required
 def viewChat(request):
     messages = []
     chat = []
