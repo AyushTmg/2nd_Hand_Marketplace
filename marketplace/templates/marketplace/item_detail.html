@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{%static 'css/marketplace/item_detail.css'%}" />
+    <script src="{% static 'js/marketplace/item_detail.js' %}"></script>  
 
 </head>
 <body>
@@ -81,14 +82,7 @@
         <br>
         {% endfor %}
     
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                document.getElementById('show-comments').addEventListener('click', function () {
-                    var commentsContainer = document.getElementById('comments-container');
-                    commentsContainer.style.display = (commentsContainer.style.display === 'none') ? 'block' : 'none';
-                });
-            });
-        </script>
+
 
 </body>
 </html>
