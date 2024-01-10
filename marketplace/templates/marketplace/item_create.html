@@ -1,8 +1,22 @@
+{%load static%}
+  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
+    <link rel="stylesheet" href="{% static "css/marketplace/item_create.css" %}"/>
+</head>
+<body>
+
 
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     {{ image_form.as_p }}
     <input type="submit" value="Create Post"> 
-</form>
-  
+  </form>
+    
+</body>
+</html>

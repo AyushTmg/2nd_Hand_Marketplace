@@ -1,23 +1,41 @@
-{{comment.user}} <br>
-{{comment.description}} <br>
-
-From here is reply
-
-{%for reply in replies%}
-
-    {{reply.user}}  <br>
-    {{reply.description}}
-
-    {% if request.user == reply.user %}
-            <a href="{% url 'reply-delete' reply.id %}" >Delete Reply</a> 
-    {%endif%}
-
-{%endfor%} 
-
-<br>
-<form method="post" >
-        {% csrf_token %}
-        Add Reply {{ form.description }}
-        <input type="submit" value="Reply"> 
-</form>
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reply</title>
+    <link 
+    rel="stylesheet" 
+    type="text/css"
+    href="{%static 'css/marketplace/add_reply.css'%}"
+    />
+    
+</head>
+<body>
+        {{comment.user}} <br>
+        {{comment.description}} <br>
+        
+        From here is reply
+        
+        {%for reply in replies%}
+        
+            {{reply.user}}  <br>
+            {{reply.description}}
+        
+            {% if request.user == reply.user %}
+                    <a href="{% url 'reply-delete' reply.id %}" >Delete Reply</a> 
+            {%endif%}
+        
+        {%endfor%} 
+        
+        <br>
+        <form method="post" >
+                {% csrf_token %}
+                Add Reply {{ form.description }}
+                <input type="submit" value="Reply"> 
+        </form>
+        
+</body>
+</html>
 

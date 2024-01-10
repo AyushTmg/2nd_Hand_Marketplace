@@ -1,0 +1,10 @@
+#chat-log {
+    height: 630px;
+    overflow-y: auto;
+}
+.message {
+    display: inline-block;
+    padding: 8px;
+    margin: 0;
+    border-radius:25px;
+}

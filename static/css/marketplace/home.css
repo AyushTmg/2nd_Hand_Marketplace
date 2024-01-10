@@ -1,0 +1,19 @@
+.item-container {
+    display: flex;  
+    flex-direction: column;
+    margin-bottom: 20px;  
+    border: 1px solid #ccc;  
+    padding: 10px;
+  }
+  
+  .item-image {
+    width: 150px;  
+    height: 100px;  
+    object-fit: cover;  
+    margin-bottom: 5px;  
+  }
+  
+  .item-separator {
+    border-top: 1px dashed #ccc;  
+    margin-bottom: 20px;  
+  }
