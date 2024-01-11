@@ -11,8 +11,6 @@
 
 </head>
 <body>
-    {%load static%}
-    {% block content %}
     
       <h2>User Profile</h2>
       <p>First Name: {{ user.first_name }}</p>
@@ -26,30 +24,9 @@
       {%endif%}
     
       {%if user == request.user%}
-          <a href="{% url 'update-profile'%}" >Edit profile</a>
+          <a href="{% url 'edit-profile'%}" >Edit profile</a>
       {%endif%}
     
-    {% endblock %}
-
-    
-    {% block content %}
-    
-      <h2>User Profile</h2>
-      <p>First Name: {{ user.first_name }}</p>
-      <p>Last Name: {{ user.last_name }}</p>
-      <p>Username: {{ user.username }}</p>
-    
-      {%if user.image%}
-          <p>Image: <img src="{{ user.image.url }}" alt=" Image"></p>
-      {%else%}
-          <p>Image: <img src="{% static "default/default.webp" %}" alt="User Image"></p>
-      {%endif%}
-    
-      {%if user == request.user%}
-          <a href="{% url 'update-profile'%}" >Edit profile</a>
-      {%endif%}
-    
-    {% endblock %}
     
 </body>
 </html>
