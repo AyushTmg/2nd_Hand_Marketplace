@@ -19,12 +19,16 @@
 
     <a href="/">Home</a>
     {% if request.user.is_authenticated%}
-    <a href="/logout/">LogOut</a>
-    <a href="/inbox/">Messages</a>  
-    <a href="/change-password/">Change Password</a>
-    <a href="/create-item/">Create Post</a>
-    <a href="{% url 'user-profile' request.user.pk%}" >View profile</a>
+          <a href="/logout/">LogOut</a>
+          <a href="/inbox/">Messages</a>  
+          <a href="/change-password/">Change Password</a>
+          <a href="/create-item/">Create Post</a>
+          <a href="{% url 'user-profile' request.user.pk%}" >View profile</a>
     {% endif%}
+    
+    {%if not request.user.is_authenticated%}
+          <a href="/login/">Login</a>
+    {%endif%}
 
     <b>Category</b>
     {%for category in categories%}
@@ -33,26 +37,28 @@
 
 
     {% for item in items %}
-    <a href="{% url 'item-detail' item.pk%}" class="delete-button">
-          <div class="item-container">
-                <h2>{{ item.title }}</h2>
-                <p>{{ item.description }}</p>
-                <p>Location: {{ item.location }}</p>
-                <p>Price: {{ item.price}}</p>
-              
-                <div class="images">
-                  {% for image in item.image.all %}
-                        <img src="{{ image.image.url }}" alt="{{ item.title }}" class="item-image">
-                  {% endfor %}
-                </div> 
-          </div>
-  </a>
-  
-  {%if item.user == request.user%}
-        <a href="{% url 'item-delete' item.pk %}" > Delete post</a>
-  {%endif%}
-  
-    <hr class="item-separator">  {% endfor %}
+          <a href="{% url 'item-detail' item.pk%}" class="delete-button">
+                <div class="item-container">
+                      <h2>{{ item.title }}</h2>
+                      <p>{{ item.description }}</p>
+                      <p>Location: {{ item.location }}</p>
+                      <p>Price: {{ item.price}}</p>
+                    
+                      <div class="images">
+                        {% for image in item.image.all %}
+                                <img src="{{ image.image.url }}" alt="{{ item.title }}" class="item-image">
+                        {% endfor %}
+                      </div> 
+                </div>
+          </a>
+        
+          {%if item.user == request.user%}
+                <a href="{% url 'item-delete' item.pk %}" > Delete post</a>
+          {%endif%}
+          
+          <hr class="item-separator">  
+
+    {% endfor %}
     
    
   </body>
