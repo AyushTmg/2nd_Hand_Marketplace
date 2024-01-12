@@ -7,6 +7,8 @@ class  Category(models.Model):
     def __str__(self) -> str:
         return self.title
     
+
+    
 class Item(models.Model):
     user=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='item')
     category=models.ForeignKey(Category,on_delete=models.PROTECT,related_name='item')
@@ -37,6 +39,8 @@ class Item(models.Model):
     def __str__(self):
         return self.title
     
+
+    
 class Image(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE,related_name='image')
     image = models.ImageField(upload_to='item_images/')
@@ -44,6 +48,8 @@ class Image(models.Model):
     def __str__(self):
         return f"Image for {self.item.title}"
     
+
+
 
 class Comment(models.Model):
     description=models.CharField(max_length=250)

@@ -1,7 +1,16 @@
 
-from django.urls import path
-from .views import ( HomeView,CreateItemView,ItemDetailView,ItemDeleteView,ReplyView,CommentDeleteView,ReplyDeleteView )
 from . import views
+from .views import ( 
+    HomeView,
+    CreateItemView,
+    ItemDetailView,
+    ItemDeleteView,
+    ReplyView,
+    CommentDeleteView,
+    ReplyDeleteView
+    )
+
+from django.urls import path
 
 urlpatterns = [
 

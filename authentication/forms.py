@@ -1,12 +1,14 @@
 from .utils import Util
 from .models import User 
+
+
 from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
-from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.utils.encoding import  force_bytes
 from django.contrib.auth.password_validation import validate_password
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import  force_bytes
 
 
 class UserRegistrationForm(UserCreationForm):

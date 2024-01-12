@@ -1,5 +1,12 @@
 from .models import User
-from .forms import ( UserRegistrationForm,UserLoginForm,SendResetPasswordEmailForm,ResetPasswordForm,UserProfileForm )
+from .forms import ( 
+    UserRegistrationForm,
+    UserLoginForm,
+    SendResetPasswordEmailForm,
+    ResetPasswordForm,
+    UserProfileForm 
+    )
+
 
 from django.views import View
 from django.views.generic import FormView,CreateView,DetailView,UpdateView
