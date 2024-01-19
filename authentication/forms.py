@@ -1,5 +1,5 @@
-from .utils import Util
 from .models import User 
+from .tasks import send_password_reset_email_task
 
 
 from django import forms
@@ -49,7 +49,7 @@ class SendResetPasswordEmailForm(forms.Form):
             "to_email": to_email
         }
         
-        Util.send_password_reset_email(data)
+        send_password_reset_email_task.delay(data)
         return email
     
 class ResetPasswordForm(forms.Form):
