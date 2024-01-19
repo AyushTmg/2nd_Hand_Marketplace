@@ -142,3 +142,6 @@ DEFAULT_FROM_EMAIL = os.environ.get('EMAIL')
 
 
 LOGIN_URL = '/login/'
+
+# !Configurations for Celery
+CELERY_BROKER_URL = 'redis://localhost:6379/1'
