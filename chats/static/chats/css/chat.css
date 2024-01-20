@@ -3,8 +3,13 @@
     overflow-y: auto;
 }
 .message {
-    display: inline-block;
+    display: block;
     padding: 8px;
     margin: 0;
     border-radius:25px;
+}
+
+body{
+    background-color: black;
+    color: white;
 }

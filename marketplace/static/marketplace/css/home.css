@@ -27,7 +27,7 @@
   }
 
 body {
-  background-color: #121212;
+  background-color: #212121;
   color: #ffffff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
@@ -35,12 +35,13 @@ body {
 
 header, nav, .content {
   background-color: #212121;
-  border-bottom: 1px solid #2c2c2c;
+  border-bottom: 1px solid #212121;
 }
+
 
 header {
   padding: 20px;
-  text-align: center;
+  text-align: cente212121r;
 }
 
 header h1 {

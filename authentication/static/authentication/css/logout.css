@@ -16,7 +16,7 @@ body {
 .container {
   background-color: #000000cc; 
   border: 1px solid #444444;
-  padding: 60px;
+  padding: 200px 400px;
   border-radius: 8px;
   text-align: center;
 }
@@ -26,7 +26,7 @@ body {
   margin-bottom: 40px;
   color: #87CEEB; 
   text-decoration: none;
-  font-size: 24px;
+  font-size: 50px;
   transition: color 0.3s;
 }
 
