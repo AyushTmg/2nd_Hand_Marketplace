@@ -11,15 +11,22 @@
 
 </head>
 <body>
-        chatting with  user with id {{user_id}} <br>
+        chatting with  user with id {{user.first}} <br>
 
         <div name="Chats" id="chat-log">
             {% for message in messages %}
+
                     {% if message.sender == request.user %}
-                            <p style="background-color: blue; color: white;padding: 7px;float: right;" class="message">{{ message.content }}</p> <br><br>
+                            <p style="float: right;" class="message">{{ message.content }}</p> <br><br>
                     {% else %}
-                            <p style="background-color: grey; color: white;padding: 7px; " class="message">{{ message.content }}</p> <br><br>
+                            {%if user.image%}
+                                    <img src="{{ user.image.url }}" height="30px" style="border-radius: 40%;"/>
+                            {%else%}
+                                    <img src="{% static "default/default.webp" %}" height="30px" style="border-radius: 50%;" />
+                            {% endif%}
+                            <p style="float: left;" class="message">{{ message.content }}</p> <br><br>
                     {% endif %}
+
             {% endfor %}
         </div> <br>
 

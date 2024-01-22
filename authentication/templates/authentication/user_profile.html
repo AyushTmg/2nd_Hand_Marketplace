@@ -19,11 +19,12 @@
       <p>Username: {{ user.username }}</p>
     
       {%if user.image%}
-          <p>Image: <img src="{{ user.image.url }}" alt=" Image"></p>
+          <p>Image: <img src="{{ user.image.url }}" alt="User Image"></p>
       {%else%}
-          <p>Image: <img src="{% static "default/default.webp" %}" alt="User Image"></p>
+          <p>Image: <img src="{% static "default/default.webp" %}" alt="Default Image"></p>
       {%endif%}
     
+
       {%if user == request.user%}
           <a href="{% url 'edit-profile'%}" >Edit profile</a>
       {%endif%}

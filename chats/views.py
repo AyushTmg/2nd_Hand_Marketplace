@@ -27,7 +27,8 @@ def chat(request, pk):
 
     context = {
         'messages': messages,
-        'user_id': pk
+        'user_id': pk,
+        'user': user,
     }
 
     return render(request, 'chats/chat.html', context)
