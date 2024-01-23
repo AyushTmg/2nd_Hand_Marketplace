@@ -23,7 +23,7 @@
               <a href="/inbox/">Messages</a>
               <a href="/change-password/">Change Password</a>
               <a href="/create-item/">Create Post</a>
-              <a href="{% url 'user-profile' request.user.pk %}">View profile</a>
+              <a href="{% url 'user-profile' request.user.username %}">View profile</a>
           {% endif %}
 
 

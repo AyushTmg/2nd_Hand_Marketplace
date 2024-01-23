@@ -9,6 +9,7 @@ from .forms import (
 
 
 from django.views import View
+from django.shortcuts import get_object_or_404
 from django.views.generic import FormView,CreateView,DetailView,UpdateView
 
 
@@ -161,6 +162,10 @@ class UserProfileView(DetailView):
     model = User
     template_name = 'authentication/user_profile.html'
     context_object_name = 'user'
+
+    def get_object(self):
+        username=self.kwargs['username']
+        return get_object_or_404(User,username=username)
 
 
 class UpdateProfileView(UpdateView,LoginRequiredMixin):
