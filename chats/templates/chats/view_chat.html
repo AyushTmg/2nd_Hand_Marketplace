@@ -16,12 +16,15 @@
         {% for chat in chats %}
             <li>
                 {% if user == chat.receiver %}
+                <img src="{{ chat.initiator.image.url }}" height="30px" style="border-radius: 40%;"/>
                     <a href="{% url 'chat' pk=chat.initiator.id %}">
-                        Chat with {{ chat.initiator.username }}
+                        {{ chat.initiator.username.capitalize }}
                     </a>
-                {% else %}
+                    
+                    {% else %}
+                    <img src="{{ chat.receiver.image.url }}" height="30px" style="border-radius: 40%;"/>
                     <a href="{% url 'chat' pk=chat.receiver.id %}">
-                        Chat with {{ chat.receiver.username }}
+                        {{ chat.receiver.username.capitalize }}
                     </a>
                 {% endif %}
             </li>
