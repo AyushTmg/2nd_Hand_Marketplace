@@ -11,21 +11,33 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import  force_bytes
 
 
+# ! Form for user Registration
 class UserRegistrationForm(UserCreationForm):
     class Meta:
         model=User
         fields=settings.SIGN_UP_FIELDS 
 
+
+
+
+# ! Form for user profile
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model=User 
         fields=['first_name','last_name','username','image']
 
+
+
+
+# ! Form for Loggin user
 class UserLoginForm(forms.Form):
     email=forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput())
 
 
+
+
+# ! Form for sending password reset email
 class SendResetPasswordEmailForm(forms.Form):
     email=forms.EmailField()
 
@@ -52,6 +64,11 @@ class SendResetPasswordEmailForm(forms.Form):
         send_password_reset_email_task.delay(data)
         return email
     
+
+
+
+
+# ! Form for Resetting password
 class ResetPasswordForm(forms.Form):
     password=forms.CharField(validators=[validate_password])
     password_confirmation=forms.CharField(validators=[validate_password])

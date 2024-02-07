@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+
+# ! Model For Chat
 class Chat(models.Model):
     initiator = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="initiator"
@@ -10,8 +12,13 @@ class Chat(models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
 
 
+
+
+# ! Model for sending message in a Chat
 class Message(models.Model):
-    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sender')
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sender'
+    )
     attachment = models.FileField(null=True,blank=True)
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)

@@ -5,6 +5,6 @@ from . import views
 urlpatterns = [
 
     path('chat/<str:pk>/',views.chat,name='chat'),
-    path('inbox/',views.viewChat,name='inbox'),
+    path('chat/',views.viewChat,name='inbox'),
 
 ]

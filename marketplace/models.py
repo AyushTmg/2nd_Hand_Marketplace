@@ -1,6 +1,9 @@
 from django.db import models
 from django.conf import settings 
 
+
+
+# ! Category
 class  Category(models.Model):
     title=models.CharField(max_length=150,unique=True)
 
@@ -8,7 +11,8 @@ class  Category(models.Model):
         return self.title
     
 
-    
+
+# ! Item 
 class Item(models.Model):
     user=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,related_name='item')
     category=models.ForeignKey(Category,on_delete=models.PROTECT,related_name='item')
@@ -40,6 +44,7 @@ class Item(models.Model):
     
 
     
+# ! Image
 class Image(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE,related_name='image')
     image = models.ImageField(upload_to='item_images/')
@@ -48,8 +53,7 @@ class Image(models.Model):
         return f"Image for {self.item.title}"
     
 
-
-
+# ! Comment
 class Comment(models.Model):
     description=models.CharField(max_length=250)
     user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='comment')
@@ -58,6 +62,9 @@ class Comment(models.Model):
     def __str__(self) -> str:
         return self.description
     
+
+
+# ! Reply
 class Reply(models.Model):
     description=models.CharField(max_length=250)
     user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='reply')

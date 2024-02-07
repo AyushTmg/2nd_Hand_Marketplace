@@ -173,8 +173,10 @@ class UpdateProfileView(UpdateView,LoginRequiredMixin):
     model=User
     template_name='authentication/update_profile.html'
 
+
     def get_object(self) :
         return self.request.user 
+    
     
     def get_success_url(self) -> str:
         return reverse('user-profile',args=[self.request.user.pk])
